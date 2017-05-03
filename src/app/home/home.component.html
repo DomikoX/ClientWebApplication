@@ -1,0 +1,57 @@
+﻿<nav class="navbar navbar-default">
+    <div class="container-fluid ">
+
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Remote PC control </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <p class="navbar-text navbar-right">{{webApiService.username}} (<a
+                    [routerLink]="['/login']">logout</a>) </p>
+
+            <p  *ngIf="webApiService.isAdmin()"  class="navbar-text navbar-right"><a [routerLink]="['/admin']">Admin</a></p>
+
+
+        </div>
+
+
+    </div>
+
+</nav>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4 (click)="webApiService.getOnlineDeviceList()"> Online Devices</h4>
+        <ul *ngIf="devices">
+            <li *ngFor="let device of devices" (click)="selectDevice(device)"
+                [class.selected]="device === selectedDevice" [class.online]="device.Online"
+                [class.multipleSelected]="device.IsSelected"><span> {{device.Name}}   <input *ngIf="device.Online"
+                                                                                             [(ngModel)]="device.IsSelected"
+                                                                                             (change)="addDevice(device)"
+                                                                                             type="checkbox"/></span>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+
+        <div *ngIf="selectedDevice == null">
+            <h2>You have not selected any device</h2>
+
+            Select the device you want to control from the left panel. If no device appears,contact the administrator and ask them to assign any device
+
+        </div>
+
+
+        <device-detail *ngIf="multipleSelectedDevices.length <= 1" [device]="selectedDevice"></device-detail>
+        <multiple-device *ngIf="multipleSelectedDevices.length > 1"
+                         [devices]="multipleSelectedDevices"></multiple-device>
+    </div>
+</div>

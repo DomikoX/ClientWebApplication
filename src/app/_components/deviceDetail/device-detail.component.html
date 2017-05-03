@@ -1,0 +1,74 @@
+<div *ngIf="device">
+    <div class="page-header">
+        <h2>{{device.Name}} <small *ngIf="!device.Online">(Offline)</small></h2>
+        <h6>( {{device.Id}}) </h6>
+    </div>
+
+
+
+    <div *ngIf="device.Online">
+
+        <div class="control-bar">
+            <a (click)="this.content = 'INFO' ">Info</a> |
+            <a (click)="this.content = 'SCREEN' ">Screen</a> |
+            <a (click)="this.content = 'FILES' ">File Explorer</a> |
+            <a (click)="this.content = 'PROCESSES' ">Processes</a> |
+            <a (click)="this.content = 'OPERATIONS' ">Control</a> |
+            <a (click)="this.content = 'MESSAGES' ">Send message</a>
+
+        </div>
+        <div *ngIf="content == 'INFO'">
+
+            <h3>Info</h3>
+
+            <div>
+                <label>Cpu: </label>
+                {{device.CpuInfo}}
+            </div>
+            <div>
+                <label>Os: </label>
+                {{device.OsInfo}}
+            </div>
+
+            <button type="button" class="btn btn-success btn-sm" (click)="startUsage()">Start streaming usage</button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="stopUsage()">Stop streaming usage</button>
+
+
+            <div *ngIf="device.LastUsageTime">
+                <div>
+                    <label>Cpu usage: </label>
+                    {{device.CpuUsage | number : '1.2-2'}}%
+                </div>
+                <div>
+                    <label>Ram usage: </label>
+                    {{device.RamUsage[0]/1024 | number : '1.2-2' }} of {{device.RamUsage[1]/1024 | number : '1.2-2'}}
+                </div>
+                <h6>Last usage update {{device.LastUsageTime | date:'mediumTime' }}</h6>
+
+            </div>
+        </div>
+
+
+        <screen *ngIf="content == 'SCREEN'" [devices]=[device]></screen>
+        <operation  *ngIf="content == 'OPERATIONS'"  [devices]=[device]></operation>
+        <messages  *ngIf="content == 'MESSAGES'" [devices]="[device]"></messages>
+
+
+        <explorer *ngIf="content == 'FILES'" [device]="device"></explorer>
+
+        <processes *ngIf="content == 'PROCESSES'" [device]="device"></processes>
+    </div>
+
+    <div *ngIf="!device.Online">
+
+        <div>
+            <label>Cpu: </label>
+            {{device.CpuInfo}}
+        </div>
+        <div>
+            <label>Os: </label>
+            {{device.OsInfo}}
+        </div>
+    </div>
+
+</div>

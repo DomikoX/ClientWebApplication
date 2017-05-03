@@ -1,0 +1,27 @@
+
+
+<div class="page-header">
+    <h2>Multiple devices</h2>
+    <span *ngFor="let device of devices">{{device.Name}}, </span>
+</div>
+
+
+
+<div class="control-bar">
+    <a (click)="this.content = 'SCREEN' ">Screen</a> |
+    <a (click)="this.content = 'FILES' ">File upload</a> |
+    <a (click)="this.content = 'OPERATIONS' ">Control</a> |
+    <a (click)="this.content = 'MESSAGES' ">Send message</a>
+</div>
+
+
+<operation *ngIf="content == 'OPERATIONS'"  [devices]=devices></operation>
+<messages  *ngIf="content == 'MESSAGES'" [devices]="devices"></messages>
+
+<div *ngIf="content == 'FILES'" >
+    <h3>File upload</h3>
+    <file-upload   [devices]="devices" [toOpenFolder]="false"></file-upload>
+</div>
+
+
+<screen *ngIf="content == 'SCREEN'" [devices]=devices ></screen>

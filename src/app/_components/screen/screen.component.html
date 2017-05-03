@@ -1,0 +1,13 @@
+<h3>Screen </h3>
+
+<button type="button" class="btn btn-success btn-sm" (click)="startScreen()">Start stream screen</button>
+<button type="button" class="btn btn-danger btn-sm" (click)="stopScreen()">Stop stream Screen</button>
+
+<div>
+    <div *ngFor="let device of devices" >
+
+        <h4 *ngIf="devices.length > 1">{{device.Name}}</h4>
+        <img  *ngIf="device.LastScreen"  [src]="device.LastScreen" />
+    </div>
+
+</div>
