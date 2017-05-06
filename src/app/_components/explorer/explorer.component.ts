@@ -27,9 +27,13 @@ export class ExplorerComponent {
 
     open(i) {
         this.webApiService.openFile(this.device.Id, i).then(records => {
-            if (records != null) {
-                this.device.Records = (records as Record[]);
+
+            if (records[0] == null) {
+                return;
             }
+            this.device.Records = (records as Record[]);
+            return;
+
         })
     }
 
@@ -46,7 +50,6 @@ export class ExplorerComponent {
         }
 
 
-
     }
 
 
@@ -54,16 +57,15 @@ export class ExplorerComponent {
         if (size == 0) return "";
 
 
-
-        var cislo :number = 0;
-        if(size < 1024){
+        var cislo:number = 0;
+        if (size < 1024) {
             return size.toFixed(2) + " B";
-        }else if( (cislo = size/1024) < 1024 ){
-            return cislo.toFixed(2) +" kB";
-        } else if((cislo = size /(1024 *1024)) < 1024){
-            return cislo.toFixed(2) +" MB"
-        }else {
-            cislo =  (size/(1024 *1024 *1024));
+        } else if ((cislo = size / 1024) < 1024) {
+            return cislo.toFixed(2) + " kB";
+        } else if ((cislo = size / (1024 * 1024)) < 1024) {
+            return cislo.toFixed(2) + " MB"
+        } else {
+            cislo = (size / (1024 * 1024 * 1024));
             return cislo.toFixed(2) + " GB";
         }
 
