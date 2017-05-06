@@ -61,16 +61,28 @@ export class AdminApiService {
         return this.authorizedGet("GetListOfUsers");
     }
 
+    getDeviceByUser(username:string):any{
+        return this.authorizedPost("GetDevicesByUser",JSON.stringify({username: username,}));
+    }
+
+
     getAllDevices():any {
         return this.authorizedGet("GetListOfAllDevices");
     }
 
     assignDeviceToUser(deviceId:string, userId:string):any {
-        return this.authorizedPost("AssingDeviceTouser", JSON.stringify({
+        return this.authorizedPost("AssignDeviceToUser", JSON.stringify({
             deviceId: deviceId,
             userId: userId,
         }));
     }
 
+
+    removeDeviceFromUser(deviceId:string, userId:string):any {
+        return this.authorizedPost("RemoveDeviceFromUser", JSON.stringify({
+            deviceId: deviceId,
+            userId: userId,
+        }));
+    }
 
 }

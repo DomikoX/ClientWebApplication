@@ -9,20 +9,37 @@ import {AdminApiService} from "../_services/AdminApi.service";
 })
 
 export class AdminComponent {
+    private loading = true;
     private users = [];
-    private devices = [];
+    private devices =null;
+    private selectedUser;
 
     constructor(private webApiService:WebApiService, private adminApiService:AdminApiService) {
 
-        adminApiService.getAllUsers().then(resp => this.users = resp);
-        adminApiService.getAllDevices().then(resp => this.devices = resp);
+        adminApiService.getAllUsers().then(resp => {this.users = resp; this.loading = false});
+       // adminApiService.getAllDevices().then(resp => this.devices = resp);
 
 
     }
 
 
-    onChange($event){
-        console.log($event);
+    selectUser(user){
+        this.selectedUser = user;
+        this.devices = null;
+        this.loading = true;
+        this.adminApiService.getDeviceByUser(user[0]).then(resp => {this.devices = resp; this.loading = false});
     }
+
+    change($event,device){
+        if(device.Mark){
+            this.adminApiService.assignDeviceToUser(device.Id,this.selectedUser[1]).then(resp => console.log(resp));
+
+        }else {
+            this.adminApiService.removeDeviceFromUser(device.Id,this.selectedUser[1]);
+
+        }
+    }
+
+
 
 }
